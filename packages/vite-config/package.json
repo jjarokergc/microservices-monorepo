@@ -6,7 +6,7 @@
   "types": "src/base.mts",
   "private": true,
   "packageManager": "pnpm@10.29.3",
-  "dependencies": {
+  "devDependencies": {
     "@types/supertest": "6.0.3",
     "supertest": "7.1.4",
     "vite": "^7.3.1",

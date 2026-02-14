@@ -2,9 +2,8 @@ import dotenv from 'dotenv';
 import { z } from 'zod';
 
 const result = dotenv.config();
-console.log(process.env.NODE_ENV, 'NODE_ENV');
 if (result.error) {
-  console.error('Could not load .env file, proceeding with existing environment variables');
+  console.error(`Could not load .env file for environment: ${process.env.NODE_ENV}`);
 }
 
 const envSchema = z.object({
