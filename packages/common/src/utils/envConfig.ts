@@ -2,8 +2,9 @@
 //
 import { z } from 'zod';
 
+// Base schema with common variables for all services
 export const baseEnvSchema = z.object({
-  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  NODE_ENV: z.enum(['development', 'test', 'production']), //.default('development'),
   PORT: z.coerce.number().positive().default(3000),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error', 'silent']).default('info'),
   // Add any other variables EVERY service needs
@@ -21,5 +22,6 @@ export function createEnvConfig<Ext extends z.ZodRawShape>(
     console.error('Invalid environment variables:', parsedEnv.error.format());
     throw new Error('Invalid environment variables');
   }
+
   return parsedEnv.data;
 }
