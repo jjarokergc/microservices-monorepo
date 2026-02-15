@@ -1,4 +1,4 @@
-import { env } from '@/common/utils/envConfig';
+import { env } from './config/env';
 import { app } from './server';
 import { logger } from '@/common/logging/logger';
 

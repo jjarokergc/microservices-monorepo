@@ -1,42 +1,25 @@
-import dotenv from 'dotenv';
+// Common variables and factory for environment configuration across all services
+//
 import { z } from 'zod';
 
-const result = dotenv.config();
-if (result.error) {
-  console.error(`Could not load .env file for environment: ${process.env.NODE_ENV}`);
-}
-
-const envSchema = z.object({
-  MONGODB_HOSTNAME: z.string().min(1),
-  MONGODB_PORT: z.coerce.number().int().positive().default(27017),
-  MONGODB_DB_NAME: z.string().min(1),
-
-  REDIS_URI: z.string().min(1),
-
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('production'),
-
-  HOST: z.string().min(1).default('localhost'),
-  PORT: z.coerce.number().int().nonnegative().default(0),
-
-  CORS_ORIGIN: z.string().url().default('http://localhost:8080'),
-
-  COMMON_RATE_LIMIT_MAX_REQUESTS: z.coerce.number().int().positive().default(1000),
-  COMMON_RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(1000),
+export const baseEnvSchema = z.object({
+  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  PORT: z.coerce.number().positive().default(3000),
+  LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error', 'silent']).default('info'),
+  // Add any other variables EVERY service needs
 });
 
-const parsedEnv = envSchema.safeParse(process.env);
-
-if (!parsedEnv.success) {
-  console.error('❌ Invalid environment variables:', parsedEnv.error.format());
-  throw new Error('Invalid environment variables');
+// Factory function to create a full env config with extensions for each service
+export function createEnvConfig<Ext extends z.ZodRawShape>(
+  extension: Ext,
+  // Allows passing process.env or a custom object for testing
+  envInput = process.env
+) {
+  const fullSchema = baseEnvSchema.extend(extension);
+  const parsedEnv = fullSchema.safeParse(envInput);
+  if (!parsedEnv.success) {
+    console.error('Invalid environment variables:', parsedEnv.error.format());
+    throw new Error('Invalid environment variables');
+  }
+  return parsedEnv.data;
 }
-
-// Export the validated and parsed environment variables
-export const env = {
-  ...parsedEnv.data,
-  serviceName: process.env.npm_package_name || 'unknown-service',
-  serviceVersion: process.env.npm_package_version || '0.0.0',
-  isDevelopment: parsedEnv.data.NODE_ENV === 'development',
-  isProduction: parsedEnv.data.NODE_ENV === 'production',
-  isTest: parsedEnv.data.NODE_ENV === 'test',
-};

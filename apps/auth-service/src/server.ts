@@ -9,7 +9,7 @@ import { openAPIRouter } from './openapi/openAPIRouter';
 import errorHandler from '@/common/middleware/errorHandler';
 import { createRateLimiter } from '@/common/middleware/rateLimiter';
 import requestLogger from '@/common/middleware/requestLogger';
-import { env } from '@/common/utils/envConfig';
+import { env } from './config/env';
 
 const app: Express = express();
 
