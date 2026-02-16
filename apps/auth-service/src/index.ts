@@ -5,6 +5,18 @@ import { appLogger } from '@/common/logging/logger';
 import { connectToMongoose } from '@/common/db-utils/mongooseConnection';
 import mongoose from 'mongoose'; // ← import to access connection
 
+// Utility to parse package.json for default values in env config
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const pkgPath = path.join(__dirname, '..', 'package.json');
+const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+const serviceName = pkg.name; // e.g. "@myorg/auth-service"
+const serviceVersion = pkg.version; // e.g. "1.2.3"
+
+
 // Optional: uncomment when you activate tracing & Redis
 // import openTelemetry from '@/common/lib/tracing.js';
 // const tracing = openTelemetry(`${env.serviceName}:${env.serviceVersion}`);
@@ -52,7 +64,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
     // await tracing?.shutdown?.();
     // logger.info('Tracing shut down');
 
-    appLogger.info(`Graceful shutdown completed successfully → ${env.serviceName}`);
+    appLogger.info(`Graceful shutdown completed successfully → ${serviceName}`);
     clearTimeout(timeout);
     process.exit(0);
   } catch (err) {
@@ -63,7 +75,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
 }
 
 async function start() {
-  appLogger.info(`───────── ${env.serviceName.toUpperCase()} v${env.serviceVersion} ─────────`);
+  appLogger.info(`───────── ${serviceName.toUpperCase()} v${serviceVersion} ─────────`);
   appLogger.info(`Environment: ${env.NODE_ENV}`);
 
   try {

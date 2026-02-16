@@ -1,13 +1,19 @@
 // Common variables and factory for environment configuration across all services
 //
 import { z } from 'zod';
+import dotenv from 'dotenv';
+
+// Load .env file if present
+const dotenvResult = dotenv.config();
+if (dotenvResult.error) {
+  console.warn('No .env file found, relying on process.env');
+}
 
 // Base schema with common variables for all services
 export const baseEnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']), //.default('development'),
   PORT: z.coerce.number().positive().default(3000),
-  LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error', 'silent']).default('info'),
-  // Add any other variables EVERY service needs
+  LOG_LEVEL: z.enum(['trace', 'debug', 'info', 'warn', 'error', 'fatal']).default('info'),
 });
 
 // Factory function to create a full env config with extensions for each service

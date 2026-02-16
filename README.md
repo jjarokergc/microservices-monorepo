@@ -9,6 +9,7 @@ This is a blueprint for multiple Express-TypeScript microservices that are deplo
 - pnpm
 - Turborepo
 - TypeScript
+- Kubernetes
 
 ## Initialize monorepo
 
@@ -71,7 +72,7 @@ microservices-monorepo/
 │   ├── vite-config/                   # shared base config
 │   │   ├── src/
 │   │   │   └── base.mts               # export default defineConfig({ ... })
-│   │   ├── package.json               # "name": "@myorg/vite-config"
+│   │   ├── package.json               # "name": "@example-org/vite-config"
 │   │   └── tsconfig.json
 │   └── db-utils/               # (optional) shared mongoose utils, prisma client, etc.
 ├── infra/
@@ -107,7 +108,14 @@ docker pull mongo
 docker run --name mongodb -p 37017:27017 -d mongo
 ```
 
-## Docker Compose Development
+## Docker
+
+Run from the root of the monorepo
+
+```bash
+docker build -f apps/auth-service/Dockerfile -t auth-service:latest --target runner .
+docker run -p 3000:3000 --env-file apps/auth-service/.env auth-service
+```
 
 ### Development (with persistent Mongo)
 
