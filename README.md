@@ -76,7 +76,7 @@ microservices-monorepo/
 │   │   └── tsconfig.json
 │   └── db-utils/               # (optional) shared mongoose utils, prisma client, etc.
 ├── infra/
-│   └── k8s/                    # Kubernetes manifests (ArgoCD / Flux style)
+│   └── k8s/                    # Kubernetes manifests
 │       ├── base/
 │       ├── auth-service/
 │       ├── product-service/
@@ -132,3 +132,18 @@ docker compose --profile dev down
 ### Production (no mongo in compose — assume external)
 
 docker compose --profile prod up --build -d
+
+## Kubernetes
+
+```bash
+kubectl apply -f k8s/base/namespace.yaml
+kubectl apply -f k8s/auth/
+```
+
+### Local Testing
+```bash
+# Example with kind
+kind create cluster
+kubectl apply -f k8s/...
+kubectl port-forward svc/auth 3000:80 -n microservices
+```
