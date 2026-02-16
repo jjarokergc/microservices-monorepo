@@ -15,7 +15,7 @@
     "importsNotUsedAsValues": "remove",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true, // skip node_modules type checking for faster builds
     "forceConsistentCasingInFileNames": true,
     "types": ["vitest/globals"],
     "composite": true,
@@ -23,5 +23,5 @@
     "declarationMap": true
   },
 
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", ".pnpm-store"]
 }
