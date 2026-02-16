@@ -9,6 +9,7 @@ This is a blueprint for multiple Express-TypeScript microservices that are deplo
 - pnpm
 - Turborepo
 - TypeScript
+- Docker
 - Kubernetes
 
 ## Initialize monorepo
@@ -99,9 +100,9 @@ pnpm add -D @example-org/vite-config@workspace:* --filter @example-org/auth-serv
 
 Each consumer has its own `vite.config.mts`. A shared base configuration is in packages.
 
-## Local Development
+## Local Development against MongoDB Container
 
-This template requires a mongodb server:
+Local mongodb server:
 
 ```bash
 docker pull mongo
@@ -117,17 +118,25 @@ docker build -f apps/auth-service/Dockerfile -t auth-service:latest --target run
 docker run -p 3000:3000 --env-file apps/auth-service/.env auth-service
 ```
 
-### Development (with persistent Mongo)
+## Docker Compose
 
+Run from infra subdirectory. Use `-d` to detach and view logs separately.
+
+```bash
 docker compose --profile dev up --build -d
+```
 
 ### Check logs
 
+```bash
 docker compose --profile dev logs -f app-dev
+```
 
 ### Stop (data survives)
 
+```bash
 docker compose --profile dev down
+```
 
 ### Production (no mongo in compose — assume external)
 
@@ -141,6 +150,7 @@ kubectl apply -f k8s/auth/
 ```
 
 ### Local Testing
+
 ```bash
 # Example with kind
 kind create cluster

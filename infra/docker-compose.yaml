@@ -1,15 +1,30 @@
+# docker-compose.yml
+# ────────────────────────────────────────────────
+# Starts auth-service + MongoDB for local development / testing
+# Usage:
+#   docker compose --profile dev up --build
+#   docker compose --profile dev up -d --build    (detached mode)
+#   docker compose --profile dev down -v          (stop + remove volumes)
+#
+# Access:
+#   Auth service → http://localhost:8080
+#   MongoDB     → mongodb://authuser:yourpassword@mongodb:27017/authdb?authSource=admin
+# ────────────────────────────────────────────────
+
 services:
   app: # Production application service
     build:
-      context: .
+      context: ../
+      dockerfile: apps/auth-service/Dockerfile
       target: runner # Final, production stage in Dockerfile
+    container_name: auth-service-prod
+    restart: unless-stopped
     profiles:
-      - 'prod' # docker compose --profile production up
+      - 'prod' # docker compose --profile prod up
     ports:
       - '8080:8080'
     env_file:
-      - .env
-      - .env.docker
+      - ../apps/auth-service/.env
     environment:
       - NODE_ENV=production
       - MONGO_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
@@ -20,36 +35,53 @@ services:
 
   app-dev: # Development application service
     build:
-      context: .
+      context: ../ # Monorepo root to access all packages
+      dockerfile: apps/auth-service/Dockerfile
+      target: runner # Final, Stage 3 in Dockerfile
+    container_name: auth-service-dev
+    restart: unless-stopped
     profiles:
       - 'dev' # docker compose --profile development up
     ports:
       - '8080:8080'
       - '9229:9229' # Node.js debugger
     env_file:
-      - .env
+      - ../apps/auth-service/.env
     environment:
-      - NODE_ENV=${NODE_ENV:-development}
-      - MONGODB_HOSTNAME=mongo
+      - NODE_ENV=development
+      - MONGODB_HOSTNAME=mongodb
       - MONGODB_PORT=27017
-    volumes:
-      - ./:/app # Hot Reload
-      # - /app/node_modules # Preserve container's node_modules
-      # - /app/dist
-    command: npm run start:dev
+    # volumes:
+    # - ./:/app # Hot Reload
+    # - /app/node_modules # Preserve container's node_modules
+    # - /app/dist
+    # command: pnpm run dev
     depends_on:
-      - mongo
+      mongodb:
+        condition: service_healthy # Wait for MongoDB to be healthy before starting app-dev
 
-  mongo:
-    image: mongo:7
+  mongodb: # MongoDB service
+    image: mongo:7.0
+    container_name: auth-mongodb
+    command: mongod --quiet
+    restart: unless-stopped
+    logging:
+      driver: none # Disable logging for MongoDB to reduce noise
     ports:
-      - '27017:27017'
+      - '27017:27017' # Expose MongoDB port for Compass access
     environment:
-      - NODE_ENV=dev
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ''
+      MONGO_INITDB_ROOT_PASSWORD: ''
+      # MONGO_INITDB_DATABASE: ''
     volumes:
-      - mongo-data:/data/db # Named volume
+      - mongodb-data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', "db.adminCommand('ping')"]
+      interval: 30s # Check every xx seconds
+      timeout: 2s # Max time before failure
+      retries: 2
+      start_period: 10s # Grace period at startup before failure counting begins
 
 volumes:
-  mongo-data:
+  mongodb-data:
+    name: auth-mongodb-data
