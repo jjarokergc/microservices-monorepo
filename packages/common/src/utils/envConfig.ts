@@ -4,10 +4,7 @@ import { z } from 'zod';
 import dotenv from 'dotenv';
 
 // Load .env file if present
-const dotenvResult = dotenv.config();
-if (dotenvResult.error) {
-  console.warn('No .env file found, relying on process.env');
-}
+dotenv.config();
 
 // Base schema with common variables for all services
 export const baseEnvSchema = z.object({
