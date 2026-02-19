@@ -12,7 +12,6 @@ FROM node:23-alpine AS base
 
 ENV PNPM_HOME="/pnpm" \
     PATH="$PNPM_HOME:$PATH" \
-    CI=true \
     TURBO_TELEMETRY_DISABLED=1 \
     DO_NOT_TRACK=1
 
