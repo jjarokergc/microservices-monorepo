@@ -24,7 +24,7 @@ WORKDIR /app
 # ────────────────────────────────────────────────
 FROM base AS development-server
 
-# Copy dependency & workspace files
+# Copy monorepo root files necessary for install and build
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 
 # Copy Build Files

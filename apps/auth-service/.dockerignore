@@ -1,0 +1,16 @@
+# .dockerignore
+node_modules
+.git
+.gitignore
+Dockerfile
+README.md
+*.md
+dist
+coverage
+**/.env
+**/.env.*.local
+**/.env.local
+**/.env.development
+**/.env.production
+apps/**/.env*
+packages/**/.env*

@@ -41,7 +41,7 @@ microservices-monorepo/
 │   │   ├── tests/
 │   │   ├── tsconfig.json       # extends shared/tsconfig.base.json
 │   │   ├── package.json
-│   │   └── Dockerfile
+│   │   └── Dockerfile          # Service-specific dockerfile
 │   ├── product-service/        # similar structure
 │   ├── order-service/
 │   └── gateway/                # optional: API gateway / BFF (e.g. express or traefik)
@@ -77,11 +77,12 @@ microservices-monorepo/
 │   │   └── tsconfig.json
 │   └── db-utils/               # (optional) shared mongoose utils, prisma client, etc.
 ├── infra/
-│   └── k8s/                    # Kubernetes manifests
-│       ├── base/
-│       ├── auth-service/
-│       ├── product-service/
-│       └── ...
+│   ├── k8s/                    # Kubernetes manifests
+│   |   ├── base/
+│   |   ├── auth-service/
+│   |   ├── product-service/
+│   |   └── ...
+│   └── docker-compose.yaml
 ├── turbo.json
 ├── pnpm-workspace.yaml
 ├── package.json                # root – mostly devDependencies
@@ -130,10 +131,20 @@ Run from infra subdirectory. Use `-d` to detach and view logs separately.
 docker compose --profile dev up --build -d
 ```
 
+### Hot Reload
+
+Application source directory and common packages are mounted from host to the container.
+
+Package installation on host will require the additional step of installing the package on the container.
+
+```bash
+docker compose --profile dev restart auth-service-dev
+```
+
 ### Check logs
 
 ```bash
-docker compose --profile dev logs -f app-dev
+docker compose --profile dev logs -f auth-service-dev
 ```
 
 ### Stop (data survives)
