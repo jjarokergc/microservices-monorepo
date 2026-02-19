@@ -9,5 +9,6 @@
     "incremental": true,
     "tsBuildInfoFile": "./dist/.tsbuildinfo"
   },
-  "include": ["src/**/*", "**/*.test.ts"]
+  "include": ["src/**/*", "**/*.test.ts"],
+  "exclude": ["**/*.spec.ts", "**/node_modules/**", "**/dist/**"]
 }

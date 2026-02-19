@@ -3,10 +3,9 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true
+    "noEmit": false // allow emit if needed locally, but tsc --noEmit still used for check
   },
   "include": ["src/**/*", "**/*.test.ts"],
+  "exclude": ["**/*.spec.ts", "**/node_modules/**", "**/dist/**"],
   "references": [{ "path": "../../packages/common" }]
 }

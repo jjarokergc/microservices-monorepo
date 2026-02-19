@@ -5,6 +5,12 @@ node_modules
 Dockerfile
 README.md
 *.md
-.env*
 dist
 coverage
+**/.env
+**/.env.*
+**/.env.local
+**/.env.development
+**/.env.production
+apps/**/.env*
+packages/**/.env*

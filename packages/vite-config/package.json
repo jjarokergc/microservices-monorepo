@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/base.mts",
   "types": "src/base.mts",
+  "type": "module",
   "private": true,
   "packageManager": "pnpm@10.29.3",
   "devDependencies": {

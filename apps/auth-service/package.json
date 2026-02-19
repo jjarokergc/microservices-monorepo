@@ -7,11 +7,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc --noEmit && tsup",
-    "build:types": "tsc --emitDeclarationOnly",
+    "build": "tsc --noEmit && tsup --config tsup.config.ts",
     "clean": "rimraf dist",
-    "dev": "vite-node --watch src/index.ts",
-    "start": "NODE_ENV=production node dist/index.cjs",
+    "dev": "NODE_ENV=development tsx watch src/index.ts",
+    "start": "NODE_ENV=production node dist/index.js",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write .",
@@ -21,6 +20,7 @@
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "7.3.4",
+    "@example-org/common": "workspace:*",
     "@opentelemetry/api": "^1.4.1",
     "@opentelemetry/auto-instrumentations-node": "^0.37.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.39.1",
