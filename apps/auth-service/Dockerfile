@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1.4
+
 # Dockerfile - Production Image for Individual Service
 #
 # Build context must be the **root** of the monorepo!
@@ -6,26 +8,44 @@
 # ────────────────────────────────────────────────
 # Stage 0: Common base with pnpm prepared
 # ────────────────────────────────────────────────
-FROM node:23.11.1-slim AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable 
+FROM node:23-alpine AS base
+
+ENV PNPM_HOME="/pnpm" \
+    PATH="$PNPM_HOME:$PATH" \
+    CI=true \
+    TURBO_TELEMETRY_DISABLED=1 \
+    DO_NOT_TRACK=1
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
+
+# ────────────────────────────────────────────────
+# Stage Dev: Microservice install with dev dependencies for local development
+# Microservice: auth-service
+# ────────────────────────────────────────────────
+FROM base AS development-server
+
+# Copy dependency & workspace files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+
+# Copy Build Files
+COPY apps/auth-service/package.json ./apps/auth-service/
+COPY packages/common/package.json     ./packages/common/
+
+# Install everything necessary for build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile
+
+# Source Code for this microservice + shared packages it depends on
+COPY apps/auth-service ./apps/auth-service
+COPY packages ./packages
 
 # ────────────────────────────────────────────────
 # Stage 1: Prune & install only production dependencies for this service + shared packages it uses
 # ────────────────────────────────────────────────
-FROM base AS prod-deps
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
-# Copy only the folders needed for this service (adjust service name!)
-COPY apps/auth-service ./apps/auth-service
-# Shared packages this service depends on
-COPY packages/common      ./packages/common
-COPY packages/config      ./packages/config
-COPY packages/vite-config ./packages/vite-config
+FROM development-server AS prod-deps
 
 # Prune the monorepo to only what's needed for this service
-RUN pnpm install --frozen-lockfile
 RUN pnpm --filter ./apps/auth-service --prod deploy --prod pruned --legacy
 
 WORKDIR /app/pruned
@@ -33,14 +53,7 @@ WORKDIR /app/pruned
 # ────────────────────────────────────────────────
 # Stage 2: Full monorepo install → build only what's needed
 # ────────────────────────────────────────────────
-FROM base AS build
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
-# Copy minimal structure to make turbo happy
-COPY apps ./apps
-COPY packages ./packages
-# Install everything (dev + prod)
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install --frozen-lockfile
+FROM development-server AS build
 
 # Build only this service + its dependencies
 # ... syntax: tells turbo to include all dependencies of auth-service in the build graph
@@ -72,5 +85,4 @@ USER nodejs
 EXPOSE 8080
 
 # Start the server
-ENV NODE_ENV=production
 CMD ["node", "dist/index.cjs"]

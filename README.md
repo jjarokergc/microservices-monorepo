@@ -102,16 +102,18 @@ Each consumer has its own `vite.config.mts`. A shared base configuration is in p
 
 ## Local Development against MongoDB Container
 
-Local mongodb server:
+Start a local mongodb server before starting application:
 
 ```bash
 docker pull mongo
 docker run --name mongodb -p 37017:27017 -d mongo
 ```
 
+pnpm run dev
+
 ## Docker
 
-Run from the root of the monorepo
+Run the application in a docker container, using a separate mongodb container. This is to test the Dockerfile, as this configuration is not as useful as Docker Compose below.
 
 ```bash
 docker build -f apps/auth-service/Dockerfile -t auth-service:latest --target runner .
@@ -119,6 +121,8 @@ docker run -p 3000:3000 --env-file apps/auth-service/.env auth-service
 ```
 
 ## Docker Compose
+
+Docker compose will launch both the application and mongodb and handle dns resolution.
 
 Run from infra subdirectory. Use `-d` to detach and view logs separately.
 
