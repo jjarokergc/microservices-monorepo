@@ -2,8 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 
 import type { User } from './userModel';
 import { UserRepository } from './userRepository';
-import { ServiceResponse } from '@/common/types/serviceResponse';
-import { appLogger } from '@/common/logging/logger';
+import { ServiceResponse } from '@example-org/common';
+import { appLogger } from '@example-org/common';
 
 export class UserService {
   private userRepository: UserRepository;

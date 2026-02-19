@@ -2,7 +2,7 @@
 // Adds all registered schemas and paths to create the OpenAPI document
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
 
-import { healthCheckRegistry } from '@/common/health/healthRouter';
+import { healthCheckRegistry } from '@example-org/common';
 import { userRegistry } from '../api/user/userRouter';
 import { itemAdminRegistry } from '../api/item/itemAdminRouter';
 

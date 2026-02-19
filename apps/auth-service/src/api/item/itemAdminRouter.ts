@@ -12,8 +12,8 @@ import {
   UpdateItemRouteSchema,
   DeleteItemRouteSchema,
 } from './itemModel';
-import { createApiResponse } from '@/common/openapi/openAPIResponseBuilders';
-import { validateRequest } from '@/common/utils/httpHandlers';
+import { createApiResponse } from '@example-org/common';
+import { validateRequest } from '@example-org/common';
 import { itemController } from './itemController';
 
 export const itemAdminRouter: Router = express.Router();

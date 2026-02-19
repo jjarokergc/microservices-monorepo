@@ -2,13 +2,13 @@
 import cors from 'cors';
 import express, { type Express } from 'express';
 import helmet from 'helmet';
-import { healthCheckRouter } from '@/common';
+import { healthCheckRouter } from '@example-org/common';
 import { userRouter } from './api/user/userRouter';
 import { itemAdminRouter } from './api/item/itemAdminRouter';
 import { openAPIRouter } from './openapi/openAPIRouter';
-import errorHandler from '@/common/middleware/errorHandler';
-import { createRateLimiter } from '@/common/middleware/rateLimiter';
-import requestLogger from '@/common/middleware/requestLogger';
+import errorHandler from '@example-org/common/middleware/errorHandler';
+import { createRateLimiter } from '@example-org/common';
+import requestLogger from '@example-org/common/middleware/requestLogger';
 import { env } from './config/env';
 
 const app: Express = express();

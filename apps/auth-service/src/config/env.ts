@@ -2,7 +2,7 @@
 // Additional environment variables are merged with Common
 // variables defined in common package
 //
-import { createEnvConfig } from '@/common';
+import { createEnvConfig } from '@example-org/common'; // '../../../../packages/common/src/utils/envConfig'; //
 import { z } from 'zod';
 
 export const env = createEnvConfig({
@@ -12,8 +12,8 @@ export const env = createEnvConfig({
 
   // REDIS_URI: z.string().min(1),
 
-  HOST: z.string().min(1).default('localhost'),
-  PORT: z.coerce.number().int().nonnegative().default(0),
+  HOST: z.string().min(1),
+  PORT: z.coerce.number().int().nonnegative(),
 
   CORS_ORIGIN: z.string().url().default('http://localhost:8080'),
 

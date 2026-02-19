@@ -1,8 +1,8 @@
 import { env } from './config/env';
 import { app } from './server';
-import { appLogger } from '@/common/logging/logger';
+import { appLogger } from '@example-org/common';
 
-import { connectToMongoose } from '@/common/db-utils/mongooseConnection';
+import { connectToMongoose } from '@example-org/common';
 import mongoose from 'mongoose'; // ← import to access connection
 
 // Utility to parse package.json for default values in env config
@@ -17,7 +17,7 @@ const serviceName = pkg.name; // e.g. "@myorg/auth-service"
 const serviceVersion = pkg.version; // e.g. "1.2.3"
 
 // Optional: uncomment when you activate tracing & Redis
-// import openTelemetry from '@/common/lib/tracing.js';
+// import openTelemetry from '@example-org/common';
 // const tracing = openTelemetry(`${env.serviceName}:${env.serviceVersion}`);
 // import { createClient } from 'redis'; // or 'ioredis'
 // const redisClient = createClient({ url: env.REDIS_URI });

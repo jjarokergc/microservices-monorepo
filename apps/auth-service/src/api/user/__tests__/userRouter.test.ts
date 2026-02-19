@@ -3,7 +3,7 @@ import request from 'supertest';
 
 import type { User } from '../userModel';
 import { users } from '../userRepository';
-import type { ServiceResponse } from '@/common/types/serviceResponse';
+import type { ServiceResponse } from '@example-org/common';
 
 import { app } from '../../../server';
 

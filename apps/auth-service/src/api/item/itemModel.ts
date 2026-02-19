@@ -3,7 +3,7 @@
 // Manually track API schema and DB schema separately
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
-import { commonValidations } from '@/common/utils/commonValidation';
+import { commonValidations } from '@example-org/common';
 import mongoose, { InferSchemaType } from 'mongoose';
 
 extendZodWithOpenApi(z);

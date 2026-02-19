@@ -1,5 +1,5 @@
 import type { Request, RequestHandler, Response } from 'express';
-import { appLogger } from '@/common/logging/logger';
+import { appLogger } from '@example-org/common';
 import { itemService } from './itemService';
 
 class ItemController {

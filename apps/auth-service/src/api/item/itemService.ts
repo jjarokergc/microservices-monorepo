@@ -17,8 +17,8 @@ import { StatusCodes } from 'http-status-codes';
 
 import type { ItemCreatePayload, ItemUpdatePayload } from './itemModel';
 import { ItemRepository } from './itemRepository';
-import { ServiceResponse } from '@/common/types/serviceResponse';
-import { appLogger } from '@/common/logging/logger';
+import { ServiceResponse } from '@example-org/common';
+import { appLogger } from '@example-org/common';
 
 export class ItemService {
   private itemRepository: ItemRepository;

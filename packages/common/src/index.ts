@@ -11,7 +11,7 @@ export * from './middleware/rateLimiter';
 export * from './openapi/openAPIResponseBuilders';
 
 export * from './types/serviceResponse';
-export type { ServiceResponse } from './types/serviceResponse';
+export * from './types/serviceResponse';
 
 export * from './utils/envConfig';
 export * from './utils/httpHandlers';

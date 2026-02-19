@@ -2,8 +2,8 @@ import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 import express, { type Request, type Response, type Router } from 'express';
 import { z } from 'zod';
 
-import { createApiResponse } from '@/common/openapi/openAPIResponseBuilders';
-import { ServiceResponse } from '@/common/types/serviceResponse';
+import { createApiResponse } from '../openapi/openAPIResponseBuilders';
+import { ServiceResponse } from '../types/serviceResponse';
 
 export const healthCheckRegistry = new OpenAPIRegistry();
 export const healthCheckRouter: Router = express.Router();

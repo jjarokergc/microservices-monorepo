@@ -2,9 +2,11 @@
 //
 import { z } from 'zod';
 import dotenv from 'dotenv';
+import { appLogger } from '../logging/logger';
+import { log } from 'node:console';
 
 // Load .env file if present
-dotenv.config();
+const dotenvResult = dotenv.config();
 
 // Base schema with common variables for all services
 export const baseEnvSchema = z.object({
@@ -14,13 +16,26 @@ export const baseEnvSchema = z.object({
 });
 
 // Factory function to create a full env config with extensions for each service
-export function createEnvConfig<Ext extends z.ZodRawShape>(
-  extension: Ext,
-  // Allows passing process.env or a custom object for testing
-  envInput = process.env
-) {
+export function createEnvConfig<Ext extends z.ZodRawShape>(extension: Ext) {
   const fullSchema = baseEnvSchema.extend(extension);
-  const parsedEnv = fullSchema.safeParse(envInput);
+  const parsedEnv = fullSchema.safeParse(process.env);
+
+  if (dotenvResult.error) {
+    appLogger.warn('.env file failed to load');
+  } else {
+    const loadedEnvVars = dotenvResult.parsed || {};
+
+    if (loadedEnvVars.LOG_LEVEL === 'debug') {
+      appLogger.info('Loaded environment variables from .env file:');
+
+      // Print all key = value pairs
+      const entries = Object.entries(loadedEnvVars).sort((a, b) => a[0].localeCompare(b[0])); // optional: alphabetical sort
+      for (const [key, value] of entries) {
+        appLogger.info(`  ${key} = ${value}`);
+      }
+    }
+  }
+
   if (!parsedEnv.success) {
     console.error('Invalid environment variables:', parsedEnv.error.format());
     throw new Error('Invalid environment variables');

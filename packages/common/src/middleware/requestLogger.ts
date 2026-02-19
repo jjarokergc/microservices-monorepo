@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import type { NextFunction, Request, Response } from 'express';
 import pinoHttp from 'pino-http';
-import { httpLogger } from '@/common/logging/logger';
+import { httpLogger } from '../logging/logger';
 
 const addRequestId = (req: Request, res: Response, next: NextFunction) => {
   const existingId = req.headers['x-request-id'] as string;
@@ -21,7 +21,7 @@ const middlewareLogger = pinoHttp({
     if (err || res.statusCode >= 500 || err) return 'error'; // Server errors and exceptions
     if (res.statusCode >= 400) return 'warn'; // Client errors
     if (res.statusCode >= 200) return 'info';
-    return process.env.NODE_ENV === 'development' ? 'debug' : 'silent'; 
+    return process.env.NODE_ENV === 'development' ? 'debug' : 'silent';
   },
   genReqId: (req) => req.headers['x-request-id'] as string,
   customSuccessMessage: (req) => `${req.method} ${req.url} completed`,

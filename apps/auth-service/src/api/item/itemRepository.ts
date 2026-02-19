@@ -1,6 +1,6 @@
 import type { ItemCreatePayload, ItemUpdatePayload } from './itemModel';
 import { ItemModel } from './itemModel';
-import { appLogger } from '@/common/logging/logger';
+import { appLogger } from '@example-org/common';
 
 export class ItemRepository {
   async findAllAsync(): Promise<ItemCreatePayload[]> {
