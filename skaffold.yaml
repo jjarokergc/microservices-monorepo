@@ -1,0 +1,52 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: microservices-monorepo
+build:
+  local:
+    push: false # Important: don't push → use kind load instead
+  artifacts:
+    - image: auth-service
+      context: apps/auth-service
+      docker:
+        dockerfile: apps/auth-service/Dockerfile
+        target: development-server # Development stage in Dockerfile with full monorepo + dev dependencies
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+
+manifests:
+  rawYaml:
+    - infra/k8s/base/**/*.yaml # namespace, mongo, secrets, etc.
+    - infra/k8s/auth-service/*.yaml
+    - infra/k8s/product-service/*.yaml
+    # Add lines for every service folder
+    # - infra/k8s/order-service/*.yaml
+    # - infra/k8s/gateway/*.yaml
+    # etc.
+
+deploy:
+  kubectl: {} # Skaffold uses kubectl apply under the hood
+
+portForward:
+  - resourceType: service
+    resourceName: auth-service # adjust to your service name
+    namespace: default # or your namespace
+    port: 3000
+    localPort: 3000
+  # Add more for other services / gateway
+  # - resourceType: service
+  #   resourceName: gateway
+  #   port: 80
+  #   localPort: 8080
+
+profiles:
+  - name: dev
+    activation:
+      - command: dev
+    build:
+      local:
+        useDockerCLI: true # Ensures kind-compatible loading
+    deploy:
+      kubectl: {} # default is fine
