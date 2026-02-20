@@ -1,9 +1,10 @@
-import mongoose, { ConnectOptions } from 'mongoose';
+import mongoose from 'mongoose';
+import type { ConnectOptions } from 'mongoose';
 import { appLogger } from '../logging/logger';
 
 export const connectToMongoose = async (
   connectionString: string,
-  options: ConnectOptions = {}
+  options: ConnectOptions = {},
 ): Promise<void> => {
   try {
     appLogger.debug(`Connecting to MongoDB...${connectionString}`);

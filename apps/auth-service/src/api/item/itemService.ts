@@ -44,7 +44,7 @@ export class ItemService {
       return ServiceResponse.failure(
         'An error occurred while retrieving items.',
         null,
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -63,7 +63,7 @@ export class ItemService {
       return ServiceResponse.failure(
         'An error occurred while finding item.',
         null,
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -76,7 +76,7 @@ export class ItemService {
       return ServiceResponse.success<ItemCreatePayload>(
         'Item created successfully',
         newItem,
-        StatusCodes.CREATED
+        StatusCodes.CREATED,
       );
     } catch (ex) {
       const errorMessage = `Error creating item: ${(ex as Error).message}`;
@@ -84,13 +84,13 @@ export class ItemService {
       return ServiceResponse.failure(
         'An error occurred while creating the item.',
         null,
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
   }
   async updateItemByIdAsync(
     itemId: string,
-    data: ItemUpdatePayload
+    data: ItemUpdatePayload,
   ): Promise<ServiceResponse<ItemCreatePayload | null>> {
     appLogger.debug(`Updating item ${itemId} with data: ${JSON.stringify(data)}`);
     try {
@@ -103,7 +103,7 @@ export class ItemService {
       return ServiceResponse.success<ItemCreatePayload>(
         'Item updated successfully',
         updatedItem,
-        StatusCodes.CREATED
+        StatusCodes.CREATED,
       );
     } catch (ex) {
       const errorMessage = `Error updating item: ${(ex as Error).message}`;
@@ -111,7 +111,7 @@ export class ItemService {
       return ServiceResponse.failure(
         'An error occurred while updating the item.',
         null,
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -128,7 +128,7 @@ export class ItemService {
       return ServiceResponse.success<ItemCreatePayload>(
         'Item deleted successfully',
         deletedItem,
-        StatusCodes.NO_CONTENT
+        StatusCodes.NO_CONTENT,
       );
     } catch (ex) {
       const errorMessage = `Error deleting item: ${(ex as Error).message}`;
@@ -136,7 +136,7 @@ export class ItemService {
       return ServiceResponse.failure(
         'An error occurred while deleting the item.',
         null,
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
   }

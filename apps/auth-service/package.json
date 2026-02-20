@@ -11,9 +11,7 @@
     "clean": "rimraf dist",
     "dev": "NODE_ENV=development tsx watch src/index.ts",
     "start": "NODE_ENV=production node dist/index.js",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "format": "prettier --write .",
+    "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest",
     "test:run": "vitest run",
     "test:cov": "vitest run --coverage"
@@ -43,6 +41,7 @@
   },
   "devDependencies": {
     "@example-org/vite-config": "workspace:*",
+    "@example-org/eslint-config": "workspace:*",
     "@types/cors": "2.8.19",
     "@types/express": "5.0.3",
     "@types/supertest": "6.0.3",

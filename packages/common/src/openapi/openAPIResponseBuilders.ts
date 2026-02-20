@@ -6,7 +6,7 @@ import { ServiceResponseSchema } from '../types/serviceResponse';
 export function createApiResponse(
   schema: z.ZodType,
   description: string,
-  statusCode = StatusCodes.OK
+  statusCode = StatusCodes.OK,
 ) {
   return {
     [statusCode]: {

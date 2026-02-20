@@ -51,6 +51,7 @@
   "scripts": {
     "build": "tsc --build",
     "clean": "rimraf dist",
+    "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest",
     "test:run": "vitest run",
     "test:cov": "vitest run --coverage"
@@ -69,6 +70,7 @@
   },
   "devDependencies": {
     "@example-org/vite-config": "workspace:*",
+    "@example-org/eslint-config": "workspace:*",
     "@types/express": "5.0.3",
     "@types/pino": "^7.0.5",
     "@types/supertest": "6.0.3",

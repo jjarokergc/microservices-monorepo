@@ -2,6 +2,7 @@
 //
 import { z } from 'zod';
 import dotenv from 'dotenv';
+import { appLogger } from '../logging/logger';
 
 dotenv.config();
 
@@ -18,8 +19,8 @@ export function createEnvConfig<Ext extends z.ZodRawShape>(extension: Ext) {
   const parsedEnv = fullSchema.safeParse(process.env);
 
   if (!parsedEnv.success) {
-    console.error('Invalid environment variables:', parsedEnv.error.format());
-    console.error(`process.env: ${JSON.stringify(process.env, null, 2)}`);
+    appLogger.error(`Invalid environment variables: ${parsedEnv.error.format()}`);
+    appLogger.error(`process.env: ${JSON.stringify(process.env, null, 2)}`);
     throw new Error('Invalid environment variables');
   }
 

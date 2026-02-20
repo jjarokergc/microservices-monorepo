@@ -4,7 +4,8 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 import { commonValidations } from '@example-org/common';
-import mongoose, { InferSchemaType } from 'mongoose';
+import type { InferSchemaType } from 'mongoose';
+import mongoose from 'mongoose';
 
 extendZodWithOpenApi(z);
 
@@ -60,7 +61,7 @@ const ItemDbSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true },
     price: { type: Number, required: true, min: 0 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export type ItemDocument = InferSchemaType<typeof ItemDbSchema> & mongoose.Document;

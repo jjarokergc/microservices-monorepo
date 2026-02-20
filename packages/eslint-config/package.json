@@ -1,0 +1,25 @@
+{
+  "name": "@example-org/eslint-config",
+  "version": "1.0.0",
+  "description": "Shared ESLint configuration for the monorepo",
+  "private": true,
+  "main": "index.js",
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.29.3",
+  "devDependencies": {
+    "eslint": "^9.20.0",
+    "@eslint/js": "^9.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.23.0",
+    "typescript-eslint": "^8.21.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "@typescript-eslint/parser": "^8.21.0"
+  },
+  "peerDependencies": {
+    "eslint": "^9.0.0"
+  }
+}

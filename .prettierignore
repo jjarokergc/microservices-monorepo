@@ -3,3 +3,5 @@ build
 node_modules
 coverage
 *.min.js
+.turbo
+pnpm-lock.yaml

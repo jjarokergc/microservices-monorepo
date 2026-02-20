@@ -21,7 +21,7 @@ export class ServiceResponse<T = null> {
   static failure<T>(
     message: string,
     responseObject: T,
-    statusCode: number = StatusCodes.BAD_REQUEST
+    statusCode: number = StatusCodes.BAD_REQUEST,
   ) {
     return new ServiceResponse(false, message, responseObject, statusCode);
   }

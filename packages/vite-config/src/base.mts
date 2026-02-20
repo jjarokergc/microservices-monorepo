@@ -11,7 +11,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ mode }) => {
   // Load environment variables:
   // - When Vitest runs, mode defaults to 'test'
   // - Third arg '' = load ALL vars (no VITE_ prefix required)
@@ -33,7 +33,7 @@ export default defineConfig(({ command, mode }) => {
       env, // Make loaded env vars available inside tests as process.env.*
       globals: true, // enable global test APIs like describe, it, expect
       environment: 'node', // default for backend services
-      silent: 'passed-only', // only log failed tests (optional) other: True
+      // silent: 'passed-only', // only log failed tests (optional) other: True
       include: ['src/**/*.{test,spec}.{ts,tsx}'],
       exclude: ['**/node_modules/**', '**/dist/**'],
       coverage: {

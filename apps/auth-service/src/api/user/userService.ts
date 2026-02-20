@@ -26,7 +26,7 @@ export class UserService {
       return ServiceResponse.failure(
         'An error occurred while retrieving users.',
         null,
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -45,7 +45,7 @@ export class UserService {
       return ServiceResponse.failure(
         'An error occurred while finding user.',
         null,
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
   }

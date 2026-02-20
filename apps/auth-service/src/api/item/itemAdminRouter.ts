@@ -98,5 +98,5 @@ itemAdminRouter.put('/:itemId', validateRequest(UpdateItemRouteSchema), itemCont
 itemAdminRouter.delete(
   '/:itemId',
   validateRequest(DeleteItemRouteSchema),
-  itemController.deleteItem
+  itemController.deleteItem,
 );

@@ -25,7 +25,7 @@ app.use(
   createRateLimiter({
     limit: env.COMMON_RATE_LIMIT_MAX_REQUESTS,
     windowMs: env.COMMON_RATE_LIMIT_WINDOW_MS,
-  })
+  }),
 );
 
 // Request logging

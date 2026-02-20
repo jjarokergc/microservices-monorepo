@@ -88,7 +88,7 @@ async function start() {
         // Optional extras you might want:
         // maxPoolSize: 50,
         // family: 4, // force IPv4 if needed
-      }
+      },
     );
 
     // Optional: Redis connection
